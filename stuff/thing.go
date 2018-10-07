@@ -15,6 +15,7 @@ new WorkedPool().setJob().fetch()
 
 */
 
+
 type Worker struct {
 }
 
@@ -41,7 +42,7 @@ func (w *WorkerPool) Fetch(job Job, howMany int) {
 
 func (w *WorkerPool) spawnWorkers(j Jobs) {
 	for _, worker := range w.workers {
-		go stuff(worker, j, w.result)
+		go work(worker, j, w.result)
 	}
 }
 func (w *Worker) execute(j Job) int {
@@ -54,7 +55,7 @@ func newWorker() *Worker {
 }
 
 func NewWorkerPool(num int) *WorkerPool {
-	w := &WorkerPool{result:make(chan int, 0)}
+	w := &WorkerPool{result: make(chan int, 0)}
 	for i := 0; i < num; i++ {
 		w.workers = append(w.workers, newWorker())
 	}
@@ -62,7 +63,7 @@ func NewWorkerPool(num int) *WorkerPool {
 	return w
 }
 
-func stuff(w *Worker, jobs Jobs, res chan<- int) {
+func work(w *Worker, jobs Jobs, res chan<- int) {
 	for job := range jobs {
 		ans := w.execute(job)
 
@@ -73,7 +74,7 @@ func stuff(w *Worker, jobs Jobs, res chan<- int) {
 
 func main() {
 
-
-	NewWorkerPool(3).Fetch("HELLO", 20)
+	NewWorkerPool(3).Fetch("HELLO", 10)
+	fmt.Println("done")
 
 }
