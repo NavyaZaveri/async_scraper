@@ -42,5 +42,4 @@ func main() {
 		return res[i]<res[j]
 	})
 	fmt.Println(res)
-
 }

@@ -30,7 +30,7 @@ type blah struct {
 }
 
 func (b *blah) HasNext() bool {
-	if b.curCount == 5 {
+	if b.curCount == 20 {
 		return false
 	}
 	return true

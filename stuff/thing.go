@@ -34,6 +34,7 @@ func (w *WorkerPool) fetch(p PageIterator) []string {
 	jobs := make(Jobs, 0)
 	w.spawnWorkers(jobs)
 	wg := sync.WaitGroup{}
+	mux := sync.Mutex{}
 	results := []string{}
 	for p.HasNext() {
 		currentPage := p.Next()
@@ -41,10 +42,10 @@ func (w *WorkerPool) fetch(p PageIterator) []string {
 		go func(cur string) {
 			defer wg.Done()
 			jobs <- Job(cur)
-
+			mux.Lock()
 			x := <-w.result
-			fmt.Println(x)
 			results = append(results, x)
+			mux.Unlock()
 		}(currentPage)
 	}
 	wg.Wait()
@@ -87,6 +88,7 @@ func work(w *Worker, jobs Jobs, res chan<- string) {
 func main() {
 	b := &blah{}
 	//NewWorkerPool(3).Fetch("HELLO", 10)
-	NewWorkerPool(3).fetch(b)
+	v := NewWorkerPool(3).fetch(b)
+	fmt.Println(len(v))
 	fmt.Println("done")
 }
