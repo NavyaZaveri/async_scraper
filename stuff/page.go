@@ -12,11 +12,11 @@ func Xkcd(i int) string {
 	return "https://xkcd.com/" + strconv.Itoa(i) + "/info.0.json"
 }
 
-type Resppnse interface {
+type Response interface {
 }
 
 type xkcdResp struct {
-	Img string
+	Img string `json:"img"`
 }
 
 type PageIterator interface {
@@ -30,21 +30,19 @@ type blah struct {
 }
 
 func (b *blah) HasNext() bool {
-	if b.curCount == 50 {
+	if b.curCount == 5 {
 		return false
 	}
 	return true
-
 }
 
 func (b *blah) Next() string {
 	b.curPage = Xkcd(b.curCount)
 	b.curCount += 1
-	fmt.Println(b.curCount)
 	return b.curPage
 }
 
-func get_resp(url string, k Resppnse) Resppnse {
+func get_resp(url string, k Response) (Response) {
 	resp, err := http.Get(url)
 	body, err := ioutil.ReadAll(resp.Body)
 	r := k
@@ -58,12 +56,12 @@ func get_resp(url string, k Resppnse) Resppnse {
 
 func run(t PageIterator) {
 	c := &xkcdResp{}
-	arr := []Resppnse{}
+	arr := []Response{}
 	for t.HasNext() {
 		arr = append(arr, get_resp(t.Next(), c))
 	}
 
-	for _, v := range arr{
+	for _, v := range arr {
 		orig, ok := v.(*xkcdResp)
 		fmt.Println(ok)
 		if ok {
@@ -73,10 +71,10 @@ func run(t PageIterator) {
 	}
 
 }
-
+/*
 func main() {
 	b := &blah{}
 	run(b)
 	fmt.Println("DONE/??")
 
-}
+}*/

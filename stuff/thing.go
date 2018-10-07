@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 /*
 worker pool implementation
@@ -15,7 +18,6 @@ new WorkedPool().setJob().fetch()
 
 */
 
-
 type Worker struct {
 }
 
@@ -25,19 +27,29 @@ type Job string
 
 type WorkerPool struct {
 	workers []*Worker
-	result  chan int
+	result  chan string
 }
 
-func (w *WorkerPool) Fetch(job Job, howMany int) {
+func (w *WorkerPool) fetch(p PageIterator) []string {
 	jobs := make(Jobs, 0)
 	w.spawnWorkers(jobs)
+	wg := sync.WaitGroup{}
+	results := []string{}
+	for p.HasNext() {
+		currentPage := p.Next()
+		wg.Add(1)
+		go func(cur string) {
+			defer wg.Done()
+			jobs <- Job(cur)
 
-	for i := 0; i < howMany; i++ {
-		jobs <- "WEO"
-		x := <-w.result
-		fmt.Println(x)
+			x := <-w.result
+			fmt.Println(x)
+			results = append(results, x)
+		}(currentPage)
 	}
+	wg.Wait()
 	close(jobs)
+	return results
 }
 
 func (w *WorkerPool) spawnWorkers(j Jobs) {
@@ -45,8 +57,8 @@ func (w *WorkerPool) spawnWorkers(j Jobs) {
 		go work(worker, j, w.result)
 	}
 }
-func (w *Worker) execute(j Job) int {
-	return 1
+func (w *Worker) execute(j Job) string {
+	return string(j)
 
 }
 
@@ -55,7 +67,7 @@ func newWorker() *Worker {
 }
 
 func NewWorkerPool(num int) *WorkerPool {
-	w := &WorkerPool{result: make(chan int, 0)}
+	w := &WorkerPool{result: make(chan string, 0)}
 	for i := 0; i < num; i++ {
 		w.workers = append(w.workers, newWorker())
 	}
@@ -63,7 +75,7 @@ func NewWorkerPool(num int) *WorkerPool {
 	return w
 }
 
-func work(w *Worker, jobs Jobs, res chan<- int) {
+func work(w *Worker, jobs Jobs, res chan<- string) {
 	for job := range jobs {
 		ans := w.execute(job)
 
@@ -73,8 +85,8 @@ func work(w *Worker, jobs Jobs, res chan<- int) {
 }
 
 func main() {
-
-	NewWorkerPool(3).Fetch("HELLO", 10)
+	b := &blah{}
+	//NewWorkerPool(3).Fetch("HELLO", 10)
+	NewWorkerPool(3).fetch(b)
 	fmt.Println("done")
-
 }
