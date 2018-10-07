@@ -6,7 +6,9 @@ import "fmt"
 implementing a worker pool system
 */
 
-func worker(jobs chan int, result chan<- int) {
+
+
+func worker(jobs <-chan int, result chan<- int) {
 	for i := range jobs {
 		result <- i + 10
 	}
