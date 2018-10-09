@@ -1,18 +1,13 @@
 package scraper
 
 import (
-	"fmt"
 	"sync"
 )
-
 
 type WorkerPool struct {
 	workers []*Worker
 	result  chan []byte
 }
-
-
-
 
 func NewWorkerPool(num int) *WorkerPool {
 	w := &WorkerPool{result: make(chan []byte, 0)}
@@ -28,11 +23,10 @@ func (w *WorkerPool) spawnWorkers(j Jobs) {
 	}
 }
 
-
-
 func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 	jobs := make(Jobs, 0)
 	w.spawnWorkers(jobs)
+
 	wg := sync.WaitGroup{}
 	mux := sync.Mutex{}
 	results := [][]byte{}
@@ -44,7 +38,6 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 		//worker asynchronously
 		go func(cur string) {
 			defer wg.Done()
-			fmt.Println("CUR IS" + cur)
 			jobs <- Job(cur)
 
 			//unblocks
@@ -59,4 +52,3 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 	close(jobs)
 	return results
 }
-

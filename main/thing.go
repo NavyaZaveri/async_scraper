@@ -23,6 +23,6 @@ NeWorkePool().setJob().fetch()
 func main() {
 
 	v := scraper.NewWorkerPool(20).Fetch(&scraper.XkcdIterator{})
-	fmt.Println(v)
+	fmt.Println(len(v))
 
 }

@@ -8,9 +8,6 @@ func Xkcd(i int) string {
 	return "https://xkcd.com/" + strconv.Itoa(i) + "/info.0.json"
 }
 
-type Response interface {
-}
-
 type XkcdResp struct {
 	Img string `json:"img"`
 }
@@ -27,7 +24,7 @@ type XkcdIterator struct {
 
 func (b *XkcdIterator) HasNext() bool {
 
-	//want just two
+	//want just twenty
 	if b.curCount == 20 {
 		return false
 	}
