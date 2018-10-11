@@ -9,15 +9,16 @@ type WorkerPool struct {
 	result  chan []byte
 }
 
-func NewWorkerPool(howMany int) *WorkerPool {
+func NewWorkerPool(numWorkers int) *WorkerPool {
 	w := &WorkerPool{result: make(chan []byte, 0)}
-	for i := 0; i < howMany; i++ {
+
+	for i := 0; i < numWorkers; i++ {
 		w.workers = append(w.workers, newWorker())
 	}
 	return w
 }
 
-func (w *WorkerPool) spawnWorkers(j Jobs) {
+func (w *WorkerPool) spinWorkers(j Jobs) {
 	for _, worker := range w.workers {
 		go work(worker, j, w.result)
 	}
@@ -25,7 +26,8 @@ func (w *WorkerPool) spawnWorkers(j Jobs) {
 
 func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 	jobs := make(Jobs, 0)
-	w.spawnWorkers(jobs)
+
+	w.spinWorkers(jobs)
 
 	wg := sync.WaitGroup{}
 	mux := sync.Mutex{}
@@ -35,8 +37,6 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 		currentPage := p.Next()
 		wg.Add(1)
 
-		//assign a job to  a
-		//worker asynchronously
 		go func(cur string) {
 			defer wg.Done()
 
@@ -54,7 +54,7 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 	}
 	wg.Wait()
 
-	//close off the channel so workers stop waiting
+	//close the channel so workers stop waiting
 	close(jobs)
 	return results
 }
