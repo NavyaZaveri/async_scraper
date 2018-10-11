@@ -19,10 +19,11 @@ func (w *Worker) execute(j Job) []byte {
 		return nil
 	}
 	body, err := ioutil.ReadAll(resp.Body)
-	if err == nil {
-		return body
+
+	if err != nil {
+		return nil
 	}
-	return nil
+	return body
 
 }
 
