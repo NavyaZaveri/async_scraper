@@ -17,6 +17,7 @@ type PageIterator interface {
 	HasNext() bool
 }
 
+
 type XkcdIterator struct {
 	curPage  string
 	curCount int
