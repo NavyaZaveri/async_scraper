@@ -8,7 +8,7 @@ import (
 const numComics = 1200
 
 func BenchmarkSyncFetch(b *testing.B) {
-	for i:=0;i<b.N;i++ {
+	for i := 0; i < b.N; i++ {
 		_ = Fetch(numComics)
 	}
 }

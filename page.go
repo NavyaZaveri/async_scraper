@@ -17,7 +17,6 @@ type PageIterator interface {
 	HasNext() bool
 }
 
-
 type XkcdIterator struct {
 	curPage  string
 	curCount int
@@ -25,8 +24,8 @@ type XkcdIterator struct {
 
 func (b *XkcdIterator) HasNext() bool {
 
-	//want just twenty
-	if b.curCount == 20 {
+	//want just  50
+	if b.curCount == 50 {
 		return false
 	}
 	return true

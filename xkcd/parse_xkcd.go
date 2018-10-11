@@ -14,4 +14,3 @@ func Parse(s string) string {
 	})
 	return strings.Join(wordList, " ")
 }
-

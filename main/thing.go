@@ -1,28 +1,39 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/NavyaZaveri/scraper"
 )
 
 /*
-worker pool implementation
-so you have workers and jobs
-each worker is assigned  some job, concurrently
-
-CHANGE OF PLANS
-do **not** unmarshal, just send the body
-let the user unmarshal
-
-ideal api
-
-NeWorkePool().setJob().fetch()
+ideal usage?
+NeWorkerPool().fetch()
 
 */
 
+type JsonResp struct {
+	Img string
+}
+
 func main() {
 
-	v := scraper.NewWorkerPool(20).Fetch(&scraper.XkcdIterator{})
-	fmt.Println(len(v))
+
+	//spin up twenty workers to fetch stuff from the links
+	//provided by the iterator
+	v := scraper.NewWorkerPool(40).Fetch(&scraper.XkcdIterator{})
+
+	for _,htmlBody_ := range v {
+		js := JsonResp{}
+		err := json.Unmarshal(htmlBody_,&js)
+		if err == nil {
+			fmt.Println(js)
+
+		} else {
+			fmt.Println(err)
+		}
+
+	}
+
 
 }
