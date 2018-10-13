@@ -6,7 +6,6 @@ import (
 	"github.com/NavyaZaveri/scraper"
 	"strconv"
 )
-
 /*
 ideal usage?
 NeWorkerPool().fetch()
@@ -33,9 +32,7 @@ func (b *XkcdIterator) HasNext() bool {
 }
 
 
-func Xkcd(i int) string {
-	return "https://xkcd.com/" + strconv.Itoa(i) + "/info.0.json"
-}
+
 func (b *XkcdIterator) Next() string {
 	b.curPage = Xkcd(b.curCount)
 	b.curCount += 1

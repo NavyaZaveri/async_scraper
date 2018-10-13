@@ -10,3 +10,4 @@ Usage: json_bytes := scraper.NewWorkerPool(100).Fetch(MyPageIterator)
 */
 
 package scraper
+

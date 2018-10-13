@@ -12,6 +12,7 @@ type PageIterator interface {
 		more pages to scrape
 
 	*/
+
 	Next() string
 	HasNext() bool
 }

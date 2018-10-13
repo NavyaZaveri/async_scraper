@@ -1,10 +1,5 @@
 package scraper
 
-import (
-	"io/ioutil"
-	"net/http"
-)
-
 type Worker struct {
 }
 
@@ -13,18 +8,7 @@ func newWorker() *Worker {
 }
 
 func (w *Worker) execute(j Job) []byte {
-	url := string(j)
-	resp, err := http.Get(url)
-	if err != nil {
-		return nil
-	}
-	body, err := ioutil.ReadAll(resp.Body)
-
-	if err != nil {
-		return nil
-	}
-	return body
-
+	return extractBytesFrom(string(j))
 }
 
 func work(w *Worker, jobs Jobs, res chan<- []byte) {
