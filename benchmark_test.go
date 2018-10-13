@@ -39,8 +39,8 @@ func BenchmarkNewWorkerPool(b *testing.B) {
 		v := NewWorkerPool(100).Fetch(&XkcdIterator{})
 
 		for _, htmlBody_ := range v {
-			js := XkcdResp{}
-			_ = json.Unmarshal(htmlBody_, &js)
+			xkcdJson := XkcdResp{}
+			_ = json.Unmarshal(htmlBody_, &xkcdJson)
 
 		}
 	}
@@ -54,8 +54,8 @@ func BenchmarkSynchronousScraper(b *testing.B) {
 		for it.HasNext() {
 			page := it.Next()
 			body := extractBytesFrom(page)
-			js := XkcdResp{}
-			_ = json.Unmarshal(body, &js)
+			xkcdJson := XkcdResp{}
+			_ = json.Unmarshal(body, &xkcdJson)
 		}
 	}
 }

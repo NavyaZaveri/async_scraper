@@ -27,6 +27,7 @@ func (w *WorkerPool) spinWorkers(j Jobs) {
 func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 	jobs := make(Jobs, 0)
 
+	//each worker is now "waiting" for a job
 	w.spinWorkers(jobs)
 
 	wg := sync.WaitGroup{}
