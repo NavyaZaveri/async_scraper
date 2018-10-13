@@ -36,21 +36,14 @@ func (b *XkcdIterator) HasNext() bool {
 
 func BenchmarkNewWorkerPool(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		v := NewWorkerPool(40).Fetch(&XkcdIterator{})
+		v := NewWorkerPool(100).Fetch(&XkcdIterator{})
 
 		for _, htmlBody_ := range v {
 			js := XkcdResp{}
-			err := json.Unmarshal(htmlBody_, &js)
-			if err == nil {
-				//fmt.Println(js)
-
-			} else {
-				//fmt.Println(err)
-			}
+			_ = json.Unmarshal(htmlBody_, &js)
 
 		}
 	}
-
 }
 
 func BenchmarkSynchronousScraper(b *testing.B) {
@@ -62,12 +55,7 @@ func BenchmarkSynchronousScraper(b *testing.B) {
 			page := it.Next()
 			body := extractBytesFrom(page)
 			js := XkcdResp{}
-			err := json.Unmarshal(body, &js)
-			if err == nil {
-				//fmt.Println(js.Img)
-			} else {
-				//t.Log(err)
-			}
+			_ = json.Unmarshal(body, &js)
 		}
 	}
 }
