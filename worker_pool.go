@@ -9,6 +9,8 @@ type WorkerPool struct {
 	result  chan []byte
 }
 
+const PAGE_ITERATOR_LIMT int = 1000
+
 func NewWorkerPool(numWorkers int) *WorkerPool {
 	w := &WorkerPool{result: make(chan []byte, 0)}
 
@@ -49,8 +51,13 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 
 			//store the result
 			mux.Lock()
-			results = append(results, x)
+
+			if x != nil {
+				results = append(results, x)
+			}
+
 			mux.Unlock()
+
 		}(currentPage)
 	}
 	wg.Wait()

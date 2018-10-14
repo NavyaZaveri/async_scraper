@@ -6,6 +6,12 @@ import (
 	"testing"
 )
 
+/*
+
+TODO: PUT xkcd structs inside  testdata/?
+
+ */
+
 func Xkcd(i int) string {
 	return "https://xkcd.com/" + strconv.Itoa(i) + "/info.0.json"
 }

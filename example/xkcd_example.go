@@ -12,6 +12,10 @@ NeWorkerPool().fetch()
 
 */
 
+func xkcd() {
+
+}
+
 type XkcdResp struct {
 	Img string
 }
