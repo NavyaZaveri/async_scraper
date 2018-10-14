@@ -9,7 +9,7 @@ type WorkerPool struct {
 	result  chan []byte
 }
 
-const PAGE_ITERATOR_LIMT int = 1000
+const PAGE_ITERATOR_LIMT = 1000
 
 func NewWorkerPool(numWorkers int) *WorkerPool {
 	w := &WorkerPool{result: make(chan []byte, 0)}
