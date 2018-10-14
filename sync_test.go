@@ -3,12 +3,13 @@ package scraper
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/NavyaZaveri/scraper/testdata"
 	"testing"
 )
 
 //TODO
 
-func fetch(it *XkcdIterator) [][]byte {
+func fetch(it *testdata.XkcdIterator) [][]byte {
 	res := [][]byte{}
 
 	for it.HasNext() {
@@ -20,8 +21,8 @@ func fetch(it *XkcdIterator) [][]byte {
 }
 
 func TestSync(t *testing.T) {
-	a1 := NewWorkerPool(100).Fetch(&XkcdIterator{})
-	x := XkcdResp{}
+	a1 := NewWorkerPool(100).Fetch(&testdata.XkcdIterator{})
+	x := testdata.XkcdResp{}
 	mmap := map[string]int{}
 	for _, xkcdJson := range a1 {
 		err := json.Unmarshal(xkcdJson, &x)
