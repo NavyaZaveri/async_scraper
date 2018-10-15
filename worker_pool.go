@@ -9,6 +9,8 @@ type WorkerPool struct {
 	result  chan []byte
 }
 
+//TODO:  throw error if iterations count
+//exceeds page limit
 const PAGE_ITERATOR_LIMT = 1000
 
 func NewWorkerPool(numWorkers int) *WorkerPool {
@@ -49,9 +51,10 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 			//get the result of some job.
 			x := <-w.result
 
-			//store the result
+			//lock to prevent race conditions
 			mux.Lock()
 
+			//store the (non-null) result
 			if x != nil {
 				results = append(results, x)
 			}
