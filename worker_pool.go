@@ -10,7 +10,6 @@ type WorkerPool struct {
 }
 
 //TODO:  throw error if iterations count
-//exceeds page limit
 const PAGE_ITERATOR_LIMT = 1000
 
 func NewWorkerPool(numWorkers int) *WorkerPool {

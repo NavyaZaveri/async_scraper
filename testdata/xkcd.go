@@ -23,7 +23,7 @@ func (b *XkcdIterator) Next() string {
 
 func (b *XkcdIterator) HasNext() bool {
 
-	//want just  50
+	//want just  200 comics
 	if b.curCount == 200 {
 		return false
 	}
