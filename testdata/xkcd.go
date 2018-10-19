@@ -3,6 +3,8 @@ package testdata
 import "strconv"
 
 func Xkcd(i int) string {
+
+	//returns the url to scrape
 	return "https://xkcd.com/" + strconv.Itoa(i) + "/info.0.json"
 }
 

@@ -10,7 +10,6 @@ type WorkerPool struct {
 }
 
 //TODO:  throw error if iterations count
-const PAGE_ITERATOR_LIMT = 1000
 
 func NewWorkerPool(numWorkers int) *WorkerPool {
 	w := &WorkerPool{result: make(chan []byte, 0)}
@@ -44,10 +43,12 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 		go func(cur string) {
 			defer wg.Done()
 
-			//add a job to the channel queue
+			//add a job to the channel queue. A worker
+			//will pick up this job when it's free. If there are many
+			//free workers, the worker is selected pseudorandomly
 			jobs <- Job(cur)
 
-			//get the result of some job.
+			//get the result of the job.
 			x := <-w.result
 
 			//lock to prevent race conditions
