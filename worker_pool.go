@@ -22,7 +22,7 @@ func NewWorkerPool(numWorkers int) *WorkerPool {
 
 func (w *WorkerPool) spinWorkers(j Jobs) {
 	for _, worker := range w.workers {
-		go work(worker, j, w.result)
+		go worker.work(j, w.result)
 	}
 }
 

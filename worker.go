@@ -11,9 +11,10 @@ func (w *Worker) execute(j Job) []byte {
 	return extractBytesFrom(string(j))
 }
 
-func work(w *Worker, jobs Jobs, res chan<- []byte) {
-	for job := range jobs {
 
+
+func (w *Worker) work(jobs Jobs, res chan<- []byte) {
+	for job := range jobs {
 		//you have one job. Do it!
 		ans := w.execute(job)
 
@@ -22,4 +23,5 @@ func work(w *Worker, jobs Jobs, res chan<- []byte) {
 		//end, freeing up the worker.
 		res <- ans
 	}
+
 }
