@@ -27,6 +27,10 @@ func (w *WorkerPool) spinWorkers(j Jobs) {
 }
 
 func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
+	/*
+	returns the byte representation of every website
+	needed to scrape
+	 */
 	jobs := make(Jobs, 0)
 
 	//each worker is now "waiting" for a job
@@ -44,7 +48,7 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 			defer wg.Done()
 
 			//add a job to the channel queue. A worker
-			//will pick up this job when it's free. If there are many
+			//will pick up this job when it's free. If there are multiple
 			//free workers, the worker is selected pseudorandomly
 			jobs <- Job(cur)
 

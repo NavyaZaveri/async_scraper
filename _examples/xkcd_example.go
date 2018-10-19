@@ -7,15 +7,9 @@ import (
 	"github.com/NavyaZaveri/scraper/testdata"
 )
 
-/*
-ideal usage?
-NeWorkerPool().fetch()
-
-*/
-
 func main() {
 
-	//spin up twenty workers to fetch stuff from the links
+	//spin up 40 workers to fetch contents ([]bytes) from the links
 	//provided by the iterator
 	v := scraper.NewWorkerPool(40).Fetch(&testdata.XkcdIterator{})
 
@@ -23,12 +17,10 @@ func main() {
 		js := testdata.XkcdResp{}
 		err := json.Unmarshal(htmlBody_, &js)
 		if err == nil {
-			fmt.Println(js)
+			fmt.Println(js.Img)
 
 		} else {
 			fmt.Println(err)
 		}
-
 	}
-
 }

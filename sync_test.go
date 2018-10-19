@@ -6,24 +6,24 @@ import (
 	"testing"
 )
 
-
 func TestForDuplicates(t *testing.T) {
 	a1 := NewWorkerPool(100).Fetch(&testdata.XkcdIterator{})
 	comics := []testdata.XkcdResp{}
 	x := testdata.XkcdResp{}
-	mmap := map[testdata.XkcdResp]int{}
-	for _, xkcdJson := range a1 {
-		err := json.Unmarshal(xkcdJson, &x)
+
+	//use a map to store unique keys
+	set := map[testdata.XkcdResp]int{}
+
+	for _, xkcdBytes := range a1 {
+		err := json.Unmarshal(xkcdBytes, &x)
 		if err == nil {
-			mmap[x] = 1
-			comics = append(comics,x)
-		} else {
+			set[x] = 1
+			comics = append(comics, x)
 		}
 	}
-
-	if len(mmap) != len(comics) {
+	if len(set) != len(comics) {
 		t.Logf("TestForDuplicates Failed")
-	} else{
+	} else {
 		t.Logf("test passed")
 	}
 
