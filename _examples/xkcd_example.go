@@ -5,13 +5,16 @@ import (
 	"fmt"
 	"github.com/NavyaZaveri/scraper"
 	"github.com/NavyaZaveri/scraper/testdata"
+	"github.com/pkg/profile"
+	"runtime"
 )
 
 func main() {
+	defer profile.Start().Stop()
 
 	//spin up 40 workers to fetch contents ([]bytes) from the links
 	//provided by the iterator
-	v := scraper.NewWorkerPool(40).Fetch(&testdata.XkcdIterator{})
+	v := scraper.NewWorkerPool(10).Fetch(&testdata.XkcdIterator{})
 
 	for _, htmlBody_ := range v {
 		js := testdata.XkcdResp{}
@@ -23,4 +26,5 @@ func main() {
 			fmt.Println(err)
 		}
 	}
+	fmt.Println(runtime.NumGoroutine());
 }

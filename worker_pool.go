@@ -28,8 +28,9 @@ func (w *WorkerPool) spinWorkers(j Jobs) {
 	}
 }
 
+
 /*
-Fetch returns the byte representation of every website
+Fetch returns a slice containing the byte contents of each website
 needed to scrape
  */
 func (w *WorkerPool) Fetch(p PageIterator) [][]byte {

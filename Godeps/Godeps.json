@@ -2,5 +2,14 @@
 	"ImportPath": "github.com/NavyaZaveri/scraper",
 	"GoVersion": "go1.9",
 	"GodepVersion": "v80",
-	"Deps": []
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/fortytw2/leaktest",
+			"Comment": "v1.2.0-10-gb433bbd",
+			"Rev": "b433bbd6d743c1854040b39062a3916ed5f78fe8"
+		}
+	]
 }

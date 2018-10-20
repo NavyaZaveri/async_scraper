@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func extractBytesFrom(url string)[]byte {
+func extractBytesFrom(url string) []byte {
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil

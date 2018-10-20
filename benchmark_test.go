@@ -3,10 +3,12 @@ package scraper
 import (
 	"encoding/json"
 	"github.com/NavyaZaveri/scraper/testdata"
+	"github.com/fortytw2/leaktest"
 	"testing"
 )
 
 func BenchmarkNewWorkerPool(b *testing.B) {
+	defer leaktest.Check(b)
 	for i := 0; i < b.N; i++ {
 		v := NewWorkerPool(100).Fetch(&testdata.XkcdIterator{})
 
