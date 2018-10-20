@@ -11,6 +11,7 @@ func extractBytesFrom(url string)[]byte {
 		return nil
 	}
 	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 
 	if err != nil {
 		return nil

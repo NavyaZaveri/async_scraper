@@ -11,6 +11,8 @@ type WorkerPool struct {
 
 //TODO:  throw error if iterations count
 
+
+//NewWorkerPool returns an array of workers 
 func NewWorkerPool(numWorkers int) *WorkerPool {
 	w := &WorkerPool{result: make(chan []byte, 0)}
 
@@ -26,11 +28,12 @@ func (w *WorkerPool) spinWorkers(j Jobs) {
 	}
 }
 
+/*
+Fetch returns the byte representation of every website
+needed to scrape
+ */
 func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
-	/*
-	returns the byte representation of every website
-	needed to scrape
-	 */
+
 	jobs := make(Jobs, 0)
 
 	//each worker is now "waiting" for a job
