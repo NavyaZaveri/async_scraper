@@ -3,9 +3,7 @@
 
 
 scraper can be used to asynchronously fetch
-content body from websites.
-
-Usage: json_bytes := scraper.NewWorkerPool(100).Fetch(MyPageIterator
+content (in bytes) from websites.
 
 
 */

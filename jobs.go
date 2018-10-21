@@ -5,5 +5,5 @@ package scraper
 type Job string
 
 
-type Jobs chan Job
+type JobQueue chan Job
 

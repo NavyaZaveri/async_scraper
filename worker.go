@@ -13,8 +13,9 @@ func (w *Worker) execute(j Job) []byte {
 
 
 
-func (w *Worker) work(jobs Jobs, res chan<- []byte) {
-	for job := range jobs {
+func (w *Worker) work(jobQueue JobQueue, res chan<- []byte) {
+	for job := range jobQueue {
+
 		//you have one job. Do it!
 		ans := w.execute(job)
 

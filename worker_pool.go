@@ -9,10 +9,9 @@ type WorkerPool struct {
 	result  chan []byte
 }
 
-//TODO:  throw error if iterations count
+//TODO:  set hard limit or throw error if iteration count not updates
 
-
-//NewWorkerPool returns an array of workers 
+//NewWorkerPool returns an array of workers
 func NewWorkerPool(numWorkers int) *WorkerPool {
 	w := &WorkerPool{result: make(chan []byte, 0)}
 
@@ -22,23 +21,22 @@ func NewWorkerPool(numWorkers int) *WorkerPool {
 	return w
 }
 
-func (w *WorkerPool) spinWorkers(j Jobs) {
+func (w *WorkerPool) spinWorkers(j JobQueue) {
 	for _, worker := range w.workers {
 		go worker.work(j, w.result)
 	}
 }
 
-
 /*
-Fetch returns a slice containing the byte contents of each website
+Fetch returns a 2-d slice, where each element is the byte contents of each website
 needed to scrape
- */
+*/
 func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 
-	jobs := make(Jobs, 0)
+	jobQueue := make(JobQueue, 0)
 
 	//each worker is now "waiting" for a job
-	w.spinWorkers(jobs)
+	w.spinWorkers(jobQueue)
 
 	wg := sync.WaitGroup{}
 	mux := sync.Mutex{}
@@ -52,9 +50,9 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 			defer wg.Done()
 
 			//add a job to the channel queue. A worker
-			//will pick up this job when it's free. If there are multiple
-			//free workers, the worker is selected pseudorandomly
-			jobs <- Job(cur)
+			//will pick this job up when it's free. If there are multiple
+			//free workers, a worker is selected pseudorandomly
+			jobQueue <- Job(cur)
 
 			//get the result of the job.
 			x := <-w.result
@@ -74,6 +72,6 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 	wg.Wait()
 
 	//close the channel so workers stop waiting
-	close(jobs)
+	close(jobQueue)
 	return results
 }
