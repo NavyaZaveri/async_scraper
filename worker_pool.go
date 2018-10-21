@@ -9,7 +9,7 @@ type WorkerPool struct {
 	result  chan []byte
 }
 
-//TODO:  set hard limit or throw error if iteration count not updates
+//TODO:  set hard limit or throw error if iteration count remains the same
 
 //NewWorkerPool returns an array of workers
 func NewWorkerPool(numWorkers int) *WorkerPool {
@@ -51,7 +51,7 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 
 			//add a job to the channel queue. A worker
 			//will pick this job up when it's free. If there are multiple
-			//free workers, a worker is selected pseudorandomly
+			//free workers, a worker is selected pseudo-randomly
 			jobQueue <- Job(cur)
 
 			//get the result of the job.
@@ -60,7 +60,6 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 			//lock to prevent race conditions
 			mux.Lock()
 
-			//store the (non-null) result
 			if x != nil {
 				results = append(results, x)
 			}
