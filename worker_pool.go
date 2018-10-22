@@ -71,6 +71,6 @@ func (w *WorkerPool) Fetch(p PageIterator) [][]byte {
 	wg.Wait()
 
 	//close the channel so workers stop waiting
-	close(jobQueue)
+	 close(jobQueue)
 	return results
 }
