@@ -2,7 +2,7 @@ package scraper
 
 
 /*
-PageIterator is an interable interface with two methods.
+PageIterator is an iterable interface with two methods.
 
 	Next() should return the url to be scraped
 
